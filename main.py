@@ -41,18 +41,16 @@ def read_and_analyze_network(path, separator='\t', T_start=0, T_stop=2, T_step=0
             # print(line)
             line = line.replace('\n', '')
             edge = list(map(int, line.split(separator)))
-
+            for i in range(len(Ts)):
+                if node_order != [0, 0]:
+                    MLP[i] += np.log10(
+                        np.power(node_order[edge[1]], Ts[i]) / np.sum(np.power(np.asarray(node_order), Ts[i])))
             try:
                 node_order[edge[0]] += 1
                 print("add ", line)
             except:
-                node_order.append(0)
-                for i in range(len(Ts)):
-                    if node_order != [0, 0]:
-                        MLP[i] += np.log10(np.power(node_order[edge[1]], Ts[i])) / np.sum(
-                            np.power(np.asarray(node_order), Ts[i]))
-                print("append ", line)
                 node_order.append(1)
+                print("append ", line)
             node_order[edge[1]] += 1
             # print(node_order)
             # if edge[0] % 1000 == 99:
